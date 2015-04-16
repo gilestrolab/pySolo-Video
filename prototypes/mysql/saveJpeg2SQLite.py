@@ -25,10 +25,9 @@ conn.commit()
 with open(ORIGINAL_IMG, 'rb') as input_file:
     ablob = input_file.read()
 
-    sql = '''INSERT INTO PICTURES
-        (PICTURE)
-        VALUES(?);'''
-    conn.execute(sql,[sqlite3.Binary(ablob)])
+    sql = 'INSERT INTO PICTURES VALUES (0, %s);' % str(ablob)
+    print sql
+    conn.execute(sql)
     conn.commit()
     print "boom"
 

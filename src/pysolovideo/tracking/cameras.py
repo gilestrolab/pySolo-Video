@@ -6,11 +6,11 @@ import time
 import logging
 import os
 from pysolovideo.utils.debug import PSVException
-try:
-    from picamera.array import PiRGBArray
-    from picamera import PiCamera
-except:
-    logging.warning("Could not load picamera module")
+# try:
+#     from picamera.array import PiRGBArray
+#     from picamera import PiCamera
+# except:
+#     logging.warning("Could not load picamera module")
 
 class BaseCamera(object):
     #TODO catch exception eg, if initialise with a wrong file

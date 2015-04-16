@@ -104,13 +104,28 @@ class AsyncMySQLWriter(multiprocessing.Process):
                         do_run=False
                         continue
                     c = db.cursor()
-                    c.execute(msg)
+
+                    if isinstance(msg, list):
+                        print "a"
+                        print msg[1]
+                        print msg[0]
+                        try:
+                            c.execute(msg[0] % msg[1])
+                        except Exception as e:
+                            print e
+                            raise e
+
+                        print "b"
+                    else:
+                        c.execute(msg)
+
                     db.commit()
 
                 except:
                     do_run=False
                     try:
-                        logging.error("Failed to run mysql command:\n%s" % msg)
+
+                        logging.error("Failed to run mysql command:\n%s" % str(msg))
                     except:
                         logging.error("Did not retrieve queue value")
 
@@ -155,11 +170,14 @@ class ImgToMySQLHelper(object):
             return
         cv2.imwrite(self._tmp_file, img)
         bstring = open(self._tmp_file, "rb").read()
-        cmd = "INSERT INTO %s VALUES %s" % (self._table_name, str((0, int(t), bstring)))
+
+        cmd = "INSERT INTO (%s) VALUES " % (self._table_name)
+        cmd += "(%s, %s, %s)"
+
 
         self._last_tick = tick
 
-        return cmd
+        return [cmd, ("0", str(int(t)), MySQLdb.escape_string(bstring))]
 
 class DAMFileHelper(object):
 
@@ -270,7 +288,7 @@ class ResultWriter(object):
     # _flush_every_ns = 30 # flush every 10s of data
     _max_insert_string_len = 1000
 
-    def __init__(self, db_name, rois, metadata=None, make_dam_like_table=True, take_frame_shots=False, *args, **kwargs):
+    def __init__(self, db_name, rois, metadata=None, make_dam_like_table=True, take_frame_shots=True, *args, **kwargs):
         self._queue = multiprocessing.JoinableQueue()
         self._async_writer = AsyncMySQLWriter(db_name, self._queue)
         self._async_writer.start()

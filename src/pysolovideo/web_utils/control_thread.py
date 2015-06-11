@@ -36,7 +36,7 @@ class ControlThread(Thread):
                             "last_time_stamp":0,
                             "fps":0
                             }
-    _ROIBuilderClass = TubeMonitorWithTargetROIBuilder
+    _ROIBuilderClass = SleepMonitorWithTargetROIBuilder
 
     def __init__(self, machine_id, name, version, psv_dir, video_file=None, *args, **kwargs):
         self._monit_args = args

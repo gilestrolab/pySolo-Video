@@ -641,6 +641,10 @@ class TargetGridROIBuilderBase(BaseROIBuilder):
     def _rois_from_img(self,img):
 
         map = self._find_blobs(img, self._score_targets)
+
+        #cv2.imshow("TODEL", map)
+        #cv2.waitKey(-1)
+
         bin = np.zeros_like(map)
 
         # as soon as we have three objects, we stop
@@ -809,7 +813,7 @@ class TargetGridROIBuilderBase(BaseROIBuilder):
 
         return rois
 
-    def _score_targets(self,contour, im):
+    def _score_targets(self, contour, im):
 
         area = cv2.contourArea(contour)
         perim = cv2.arcLength(contour,True)

@@ -181,7 +181,7 @@ class BaseTracker(object):
     def times(self):
         return self._times
 
-    def _find_position(self,img, mask,t):
+    def _find_position(self, img, mask,t):
         raise NotImplementedError
 
 

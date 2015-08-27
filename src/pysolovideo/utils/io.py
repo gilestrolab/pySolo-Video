@@ -6,7 +6,11 @@ import traceback
 import logging
 from collections import OrderedDict
 import sqlite3
-import MySQLdb
+try:
+    import MySQLdb
+except:
+    logging.warning("MySQL not installed")
+
 import multiprocessing
 import cv2
 import tempfile

@@ -131,11 +131,19 @@ if __name__ == "__main__":
     cam = MovieVirtualCamera(option_dict ["input"], use_wall_clock=False)
 
     my_image = cv2.imread(option_dict['mask'])
-    print option_dict['mask']
+    #print option_dict['mask']
+
+    accum = []
+    for i, (_, frame) in enumerate(cam):
+        accum.append(frame)
+        if i  >= 5:
+            break
+
+    accum = np.median(np.array(accum),0).astype(np.uint8)
     # cv2.imshow('window', my_image)
     roi_builder = Ymaze()
     # roi_builder = IterativeYMaze()
-    rois = roi_builder(my_image)
+    rois = roi_builder(accum)
 
     logging.info("Initialising monitor")
 

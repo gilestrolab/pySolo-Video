@@ -118,7 +118,6 @@ class BaseROIBuilder(object):
 
             accum = np.median(np.array(accum),0).astype(np.uint8)
         try:
-
             rois = self._rois_from_img(accum)
         except Exception as e:
             if not isinstance(camera, np.ndarray):
@@ -647,15 +646,17 @@ class TargetGridROIBuilderBase(BaseROIBuilder):
 
         bin = np.zeros_like(map)
 
+
         # as soon as we have three objects, we stop
         for t in range(0, 255,1):
             cv2.threshold(map, t, 255,cv2.THRESH_BINARY  ,bin)
             contours, h = cv2.findContours(bin,cv2.RETR_EXTERNAL,cv2.cv.CV_CHAIN_APPROX_SIMPLE)
-
+            #cv2.imshow(contours)
             if len(contours) <3:
                 raise PSVException("There should be three targets. Only %i objects have been found" % (len(contours)), img)
             if len(contours) == 3:
                 break
+
 
         target_diams = [cv2.boundingRect(c)[2] for c in contours]
 
@@ -665,13 +666,13 @@ class TargetGridROIBuilderBase(BaseROIBuilder):
         if mean_sd/mean_diam > 0.10:
             raise PSVException("Too much variation in the diameter of the targets. Something must be wrong since all target should have the same size", img)
 
+
         src_points = []
         for c in contours:
             moms = cv2.moments(c)
             x , y = moms["m10"]/moms["m00"],  moms["m01"]/moms["m00"]
 
             src_points.append((x,y))
-
 
 
         a ,b, c = src_points

@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 from pysolovideo.tracking.cameras import MovieVirtualCamera
 from pysolovideo.tracking.trackers import *
-MY_VIDEO = "/home/diana/Desktop/males_Tuesday_11_08_2015/monitor_3/2015-08-11-Aug-13-1439288019-GGSM-003-DAM15-FLY09.mp4"
+MY_VIDEO = "/home/diana/Desktop/2015-08-12-Aug-52-1439373178-GGSM-003-DAM-008-FLY-3.mp4"
 
 cap = MovieVirtualCamera(MY_VIDEO)
 
@@ -75,8 +75,6 @@ accum = None
 #
 #
 #     cv2.waitKey(1)
-#
-
 
 
 class YMazeTracker(BaseTracker):
